@@ -10,6 +10,8 @@ def granddaugter(a, b, s):
     if "Анна" in a and "Олег" in b:
         s.add(("Анна", "Олег"))
     print(s)
+
+
 def wife(a, b, r):
     if "Анастасія" in a and "Юрій" in b:
         r.add(("Анастасія", "Юрій"))
@@ -18,15 +20,23 @@ def wife(a, b, r):
     if "Вікторія" in a and "Іван" in b:
         r.add(("Вікторія", "Іван"))
     print(r)
-def objednanya(r, s):
-    a=r.union(s)
+
+
+def association_action(r, s):
+    a = r.union(s)
     return a
+
+
 def peretun(r, s):
-    a=r.intersection(s)
+    a = r.intersection(s)
     return a
+
+
 def riznutsya(r, s):
-    a=r.difference(s)
+    a = r.difference(s)
     return a
+
+
 def uni_riznutsya(u, r):
-    a=u.difference(r)
+    a = u.difference(r)
     return a
