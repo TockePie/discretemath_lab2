@@ -28,19 +28,19 @@ def second_window():
     def reader1():
         f = open(r"Adata.txt", "r")
         A.clear()
-        temp = f.read()[1: -1].replace("\'", "").split(", ")
-        A.update(temp)
+        tempa = f.read()[1: -1].replace("\'", "").split(", ")
+        A.update(tempa)
         f.close()
-        print(temp)
+        print(tempa)
         print(A)
 
     def reader2():
         f = open(r"Bdata.txt", "r")
         B.clear()
-        temp = f.read()[1: -1].replace("\'", "").split(", ")
-        B.update(temp)
+        tempb = f.read()[1: -1].replace("\'", "").split(", ")
+        B.update(tempb)
         f.close()
-        print(temp)
+        print(tempb)
         print(B)
 
     def clear1():
@@ -60,7 +60,6 @@ def second_window():
     women_listbox.place(x=0)
     for i in womenlist:
         women_listbox.insert(END, i)
-        
     men_listbox = Listbox(root2)
     men_listbox.place(x=200)
     for i in menlist:
@@ -82,10 +81,8 @@ def third_window():
     root3 = Tk()
     root3.title("Вікно 3")
     root3.geometry("1000x500")
-    
     canvas = Canvas(root3, bg="white", width=1000, height=500)
     canvas.place(x=0, y=0)
-    
     functios.granddaugter(A, B, S)
     functios.wife(A, B, R)
     coord_dict_gd = {('Марія', 'Володимир'): (705, 55, 705, 175),
@@ -96,24 +93,20 @@ def third_window():
     coord_dict_w = {('Валерія', 'Олексій'): (605, 305, 805, 425),
                     ('Анастасія', 'Юрій'): (805, 305, 605, 425),
                     ('Вікторія', 'Іван'): (505, 305, 405, 425)}
-    
     for i in R:
         if i in coord_dict_w:
             canvas.create_line(coord_dict_w[i], arrow="last")
     for i in S:
         if i in coord_dict_gd:
             canvas.create_line(coord_dict_gd[i], arrow="last")
-            
-    a_listbox = Listbox(root3)
-    a_listbox.place(x=0)
+    A_listbox = Listbox(root3)
+    A_listbox.place(x=0)
     for i in A:
-        a_listbox.insert(END, i)
-        
-    b_listbox = Listbox(root3)
-    b_listbox.place(x=200)
+        A_listbox.insert(END, i)
+    B_listbox = Listbox(root3)
+    B_listbox.place(x=200)
     for i in B:
-        b_listbox.insert(END, i)
-        
+        B_listbox.insert(END, i)
     Label(root3, text='A онука В', font='Arial 12').place(x=400)
     for i in range(len(womenlist)):
         Label(root3, text=womenlist[i], font='Arial 10').place(x=400 + i * 100, y=20)
@@ -136,10 +129,8 @@ def fourth_window():
     root4 = Tk()
     root4.title("Вікно 4")
     root4.geometry("1000x1000")
-    
     canvas = Canvas(root4, bg="white", width=1000, height=1000)
     canvas.place(x=0, y=0)
-    
     coord_dict1 = {('Валерія', 'Олексій'): (210, 55, 410, 175),
                    ('Анастасія', 'Юрій'): (410, 55, 210, 175),
                    ('Вікторія', 'Іван'): (110, 55, 10, 175),
@@ -148,7 +139,6 @@ def fourth_window():
                    ('Анна', 'Іван'): (10, 55, 10, 175),
                    ('Анна', 'Олег'): (10, 55, 110, 175),
                    ('Валерія', 'Юрій'): (210, 55, 210, 175)}
-    
     coord_dict2 = {('Валерія', 'Олексій'): (710, 55, 910, 175),
                    ('Анастасія', 'Юрій'): (910, 55, 710, 175),
                    ('Вікторія', 'Іван'): (610, 55, 510, 175),
@@ -157,7 +147,6 @@ def fourth_window():
                    ('Анна', 'Іван'): (510, 55, 510, 175),
                    ('Анна', 'Олег'): (510, 55, 610, 175),
                    ('Валерія', 'Юрій'): (710, 55, 710, 175)}
-    
     coord_dict3 = {('Валерія', 'Олексій'): (205, 305, 405, 425),
                    ('Анастасія', 'Юрій'): (405, 305, 205, 425),
                    ('Вікторія', 'Іван'): (105, 305, 5, 425),
@@ -166,7 +155,6 @@ def fourth_window():
                    ('Анна', 'Іван'): (5, 305, 5, 425),
                    ('Анна', 'Олег'): (5, 305, 105, 425),
                    ('Валерія', 'Юрій'): (205, 305, 205, 425)}
-    
     coord_dict4 = {('Валерія', 'Олексій'): (710, 305, 910, 425),
                    ('Анастасія', 'Юрій'): (910, 305, 710, 425),
                    ('Вікторія', 'Іван'): (610, 305, 510, 425),
@@ -175,7 +163,6 @@ def fourth_window():
                    ('Анна', 'Іван'): (510, 305, 510, 425),
                    ('Анна', 'Олег'): (510, 305, 610, 425),
                    ('Валерія', 'Юрій'): (710, 305, 710, 425)}
-    
     coord_dict5 = {('Валерія', 'Олексій'): (210, 555, 410, 675),
                    ('Анастасія', 'Юрій'): (410, 555, 210, 675),
                    ('Вікторія', 'Іван'): (110, 555, 10, 675),
@@ -184,29 +171,26 @@ def fourth_window():
                    ('Анна', 'Іван'): (10, 555, 10, 675),
                    ('Анна', 'Олег'): (10, 555, 110, 675),
                    ('Валерія', 'Юрій'): (210, 555, 210, 675)}
-    
-    r_and_s_union = functios.association_action(R, S)
-    r_and_s_intersection = functios.intersection(R, S)
-    r_and_s_difference = functios.riznutsya(R, S)
-    u_and_r_difference = functios.uni_riznutsya(U, R)
-    
-    for i in r_and_s_union:
+    RS_uni = functios.association_action(R, S)
+    RS_pere = functios.peretun(R, S)
+    RS_riz = functios.riznutsya(R, S)
+    UR_riz = functios.uni_riznutsya(U, R)
+    for i in RS_uni:
         if i in coord_dict1:
             canvas.create_line(coord_dict1[i], arrow="last")
-    for i in r_and_s_intersection:
+    for i in RS_pere:
         if i in coord_dict3:
             canvas.create_line(coord_dict3[i], arrow="last")
-    for i in r_and_s_difference:
+    for i in RS_riz:
         if i in coord_dict2:
             canvas.create_line(coord_dict2[i], arrow="last")
-    for i in u_and_r_difference:
+    for i in UR_riz:
         if i in coord_dict4:
             canvas.create_line(coord_dict4[i], arrow="last")
     for i in S:
         if i in coord_dict5:
             canvas.create_line(coord_dict5[i], arrow="first")
     Label(root4, text='R ∪ S', font='Arial 12').place(x=0)
-    
     for i in range(len(womenlist)):
         Label(root4, text=womenlist[i], font='Arial 10').place(x=0 + i * 100, y=20)
         canvas.create_oval(5 + i * 100, 45, 15 + i * 100, 55, fill="black")
@@ -221,7 +205,6 @@ def fourth_window():
         Label(root4, text=menlist[i], font='Arial 10').place(x=0 + i * 100, y=440)
         canvas.create_oval(5 + i * 100, 425, 15 + i * 100, 435, fill="black")
     Label(root4, text='R\S', font='Arial 12').place(x=500)
-    
     for i in range(len(womenlist)):
         Label(root4, text=womenlist[i], font='Arial 10').place(x=500 + i * 100, y=20)
         canvas.create_oval(505 + i * 100, 45, 515 + i * 100, 55, fill="black")
@@ -229,7 +212,6 @@ def fourth_window():
         Label(root4, text=menlist[i], font='Arial 10').place(x=500 + i * 100, y=190)
         canvas.create_oval(505 + i * 100, 175, 515 + i * 100, 185, fill="black")
     Label(root4, text='U\R', font='Arial 12').place(x=500, y=250)
-    
     for i in range(len(womenlist)):
         Label(root4, text=womenlist[i], font='Arial 10').place(x=500 + i * 100, y=270)
         canvas.create_oval(505 + i * 100, 295, 515 + i * 100, 305, fill="black")
@@ -246,19 +228,16 @@ def fourth_window():
 
 
 # Вікно 1
-group = 32
-number_in_list = 16
-variant = (number_in_list + group % 60) % 30 + 1
-
+G = 21
+N = 27
+L = (N + G % 60) % 30 + 1
 root = Tk()
 root.title("Вікно 1")
 root.geometry("500x200")
-
-Label(root, text='Крадожон Максим Романович', font='Arial 14').place(x=127, y=15)
-Label(root, text=f'Група {group}', font='Arial 12').place(x=14, y=165)
-Label(root, text=f'Номер в списку: {number_in_list}', font='Arial 12').place(x=89, y=165)
-Label(root, text=f'Варіант завдання: {variant}', font='Arial 12').place(x=330, y=165)
-
+Label(root, text='Тишнюк Іван Олегович', font='Arial 14').place(x=0)
+Label(root, text=f'Група {G}', font='Arial 12').place(x=0, y=24)
+Label(root, text=f'Номер в списку: {N}', font='Arial 12').place(x=75, y=24)
+Label(root, text=f'Варіант завдання: {L}', font='Arial 12').place(x=0, y=46)
 A = set()
 B = set()
 S = set()
@@ -275,7 +254,7 @@ U = {('Анастасія', 'Юрій'),
 womenlist = ["Анна", "Вікторія", "Валерія", "Марія", "Анастасія"]
 menlist = ["Іван", "Олег", "Юрій", "Володимир", "Олексій"]
 
-Button(root, width=8, text="Вікно 2", font="Arial 10", command=second_window).place(x=45, y=120)
-Button(root, width=8, text="Вікно 3", font="Arial 10", command=third_window).place(x=205, y=120)
-Button(root, width=8, text="Вікно 4", font="Arial 10", command=fourth_window).place(x=365, y=120)
+Button(root, width=8, text="Вікно 2", font="Arial 10", command=second_window).place(x=5, y=100)
+Button(root, width=8, text="Вікно 3", font="Arial 10", command=third_window).place(x=85, y=100)
+Button(root, width=8, text="Вікно 4", font="Arial 10", command=fourth_window).place(x=165, y=100)
 root.mainloop()

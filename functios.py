@@ -27,7 +27,7 @@ def association_action(r, s):
     return a
 
 
-def intersection(r, s):
+def peretun(r, s):
     a = r.intersection(s)
     return a
 
