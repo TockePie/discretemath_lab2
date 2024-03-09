@@ -1,120 +1,90 @@
+import functions
 import os
 from tkinter import *
-import functions
+
+from data import coord_dict1, coord_dict3, coord_dict2, coord_dict4, coord_dict5, coord_dict_w, coord_dict_gd, \
+    womenlist, menlist, set_u
 
 
-# Вікно 2
 def second_window():
     def set_adder():
-        a = setnum.get()
-        print(a)
-        if a == 1:
-            print(f'Жінки: {women_listbox.get(ANCHOR)}')
-            A.add(women_listbox.get(ANCHOR))
-        else:
-            print(f'Чоловіки: {men_listbox.get(ANCHOR)}')
-            B.add(men_listbox.get(ANCHOR))
+        selected_listbox = women_listbox if setnum.get() == 1 else men_listbox
+        selected_set = set_a if setnum.get() == 1 else set_b
+        print(selected_listbox.get(ANCHOR))
+        selected_set.add(selected_listbox.get(ANCHOR))
 
-    def saver1():
-        f = open(r"Adata.txt", "w")
-        f.write(str(A))
-        f.close()
+    def save_set_to_file(set_to_save, file_name):
+        with open(file_name, "w") as f:
+            f.write("\n".join(set_to_save))
 
-    def saver2():
-        f = open(r"Bdata.txt", "w")
-        f.write(str(B))
-        f.close()
+    def read_set_from_file(set_to_update, file_name):
+        with open(file_name, "r") as f:
+            set_to_update.clear()
+            temp = f.read().strip().split("\n")
+            set_to_update.update(temp)
 
-    def reader1():
-        f = open(r"Adata.txt", "r")
-        A.clear()
-        temp = f.read()[1: -1].replace("\'", "").split(", ")
-        A.update(temp)
-        f.close()
-        print(temp)
-        print(A)
+            print(temp)
+            print(set_to_update)
 
-    def reader2():
-        f = open(r"Bdata.txt", "r")
-        B.clear()
-        temp = f.read()[1: -1].replace("\'", "").split(", ")
-        B.update(temp)
-        f.close()
-        print(temp)
-        print(B)
-
-    def clear1():
-        A.clear()
-        os.remove(r"Adata.txt")
-
-    def clear2():
-        B.clear()
-        os.remove(r"Bdata.txt")
+    def clear_set_and_file(set_to_clear, file_name):
+        set_to_clear.clear()
+        os.remove(file_name)
 
     root2 = Tk()
     root2.title("Вікно 2")
     root2.geometry("500x350")
-    
+
     setnum = IntVar(root2)
     women_listbox = Listbox(root2)
     women_listbox.place(x=50, y=10)
-    for i in womenlist:
-        women_listbox.insert(END, i)
-        
+    women_listbox.insert(END, *womenlist)
     men_listbox = Listbox(root2)
     men_listbox.place(x=300, y=10)
-    for i in menlist:
-        men_listbox.insert(END, i)
+    men_listbox.insert(END, *menlist)
 
     Radiobutton(root2, text="Множина А", variable=setnum, value=1).place(x=60, y=180)
     Radiobutton(root2, text="Множина B", variable=setnum, value=2).place(x=320, y=180)
     Button(root2, width=8, text="Додати", font="Arial 10", command=set_adder).place(x=200, y=120)
-    Button(root2, width=15, text="Зберегти А у файл", font="Arial 10", command=saver1).place(x=0+50, y=240)
-    Button(root2, width=15, text="Зберегти В у файл", font="Arial 10", command=saver2).place(x=0+50, y=270)
-    Button(root2, width=10, text="Зчитати А", font="Arial 10", command=reader1).place(x=140+50, y=240)
-    Button(root2, width=10, text="Зчитати В", font="Arial 10", command=reader2).place(x=140+50, y=270)
-    Button(root2, width=10, text="Очистити А", font="Arial 10", command=clear1).place(x=320, y=240)
-    Button(root2, width=10, text="Очистити В", font="Arial 10", command=clear2).place(x=320, y=270)
+    Button(root2, width=15, text="Зберегти А у файл", font="Arial 10",
+           command=lambda: save_set_to_file(set_a, "Adata.txt")).place(x=0 + 50, y=240)
+    Button(root2, width=15, text="Зберегти В у файл", font="Arial 10",
+           command=lambda: save_set_to_file(set_b, "Bdata.txt")).place(x=0 + 50, y=270)
+    Button(root2, width=10, text="Зчитати А", font="Arial 10",
+           command=lambda: read_set_from_file(set_a, "Adata.txt")).place(x=140 + 50, y=240)
+    Button(root2, width=10, text="Зчитати В", font="Arial 10",
+           command=lambda: read_set_from_file(set_b, "Bdata.txt")).place(x=140 + 50, y=270)
+    Button(root2, width=10, text="Очистити А", font="Arial 10",
+           command=lambda: clear_set_and_file(set_a, "Adata.txt")).place(x=320, y=240)
+    Button(root2, width=10, text="Очистити В", font="Arial 10",
+           command=lambda: clear_set_and_file(set_b, "Bdata.txt")).place(x=320, y=270)
 
 
-# Вікно 3
 def third_window():
+    def populate_listbox(listbox, some_set, x_position, y_position):
+        listbox.place(x=x_position, y=y_position)
+        for item in some_set:
+            listbox.insert(END, item)
+
     root3 = Tk()
     root3.title("Вікно 3")
     root3.geometry("1000x500")
-    
+
     canvas = Canvas(root3, bg="white", width=1000, height=500)
     canvas.place(x=0, y=0)
-    
-    functions.granddaugter(A, B, S)
-    functions.wife(A, B, R)
-    coord_dict_gd = {('Марія', 'Володимир'): (705, 55, 705, 175),
-                     ('Вікторія', 'Юрій'): (505, 55, 605, 175),
-                     ('Анна', 'Іван'): (405, 55, 405, 175),
-                     ('Анна', 'Олег'): (405, 55, 505, 175),
-                     ('Валерія', 'Юрій'): (605, 55, 605, 175)}
-    
-    coord_dict_w = {('Валерія', 'Олексій'): (605, 305, 805, 425),
-                    ('Анастасія', 'Юрій'): (805, 305, 605, 425),
-                    ('Вікторія', 'Іван'): (505, 305, 405, 425)}
-    
-    for i in R:
+
+    functions.granddaugter(set_a, set_b, set_s)
+    functions.wife(set_a, set_b, set_r)
+
+    for i in set_r:
         if i in coord_dict_w:
             canvas.create_line(coord_dict_w[i], arrow="last")
-    for i in S:
+    for i in set_s:
         if i in coord_dict_gd:
             canvas.create_line(coord_dict_gd[i], arrow="last")
-            
-    A_listbox = Listbox(root3)
-    A_listbox.place(x=50, y=100)
-    for i in A:
-        A_listbox.insert(END, i)
-        
-    B_listbox = Listbox(root3)
-    B_listbox.place(x=200, y=100)
-    for i in B:
-        B_listbox.insert(END, i)
-        
+
+    populate_listbox(Listbox(root3), set_a, 50, 100)
+    populate_listbox(Listbox(root3), set_b, 200, 100)
+
     Label(root3, text='A онука В', font='Arial 12').place(x=400)
     for i in range(len(womenlist)):
         Label(root3, text=womenlist[i], font='Arial 10').place(x=400 + i * 100, y=20)
@@ -132,7 +102,6 @@ def third_window():
         canvas.create_oval(400 + i * 100, 425, 410 + i * 100, 435, fill="black")
 
 
-# Вікно 4
 def fourth_window():
     root4 = Tk()
     root4.title("Вікно 4")
@@ -141,71 +110,22 @@ def fourth_window():
     canvas = Canvas(root4, bg="white", width=1000, height=1000)
     canvas.place(x=0, y=0)
 
-    coord_dict1 = {('Валерія', 'Олексій'): (210, 55, 410, 175),
-                   ('Анастасія', 'Юрій'): (410, 55, 210, 175),
-                   ('Вікторія', 'Іван'): (110, 55, 10, 175),
-                   ('Марія', 'Володимир'): (310, 55, 310, 175),
-                   ('Вікторія', 'Юрій'): (110, 55, 210, 175),
-                   ('Анна', 'Іван'): (10, 55, 10, 175),
-                   ('Анна', 'Олег'): (10, 55, 110, 175),
-                   ('Валерія', 'Юрій'): (210, 55, 210, 175)}
-
-    coord_dict2 = {('Валерія', 'Олексій'): (710, 55, 910, 175),
-                   ('Анастасія', 'Юрій'): (910, 55, 710, 175),
-                   ('Вікторія', 'Іван'): (610, 55, 510, 175),
-                   ('Марія', 'Володимир'): (810, 55, 810, 175),
-                   ('Вікторія', 'Юрій'): (610, 55, 710, 175),
-                   ('Анна', 'Іван'): (510, 55, 510, 175),
-                   ('Анна', 'Олег'): (510, 55, 610, 175),
-                   ('Валерія', 'Юрій'): (710, 55, 710, 175)}
-
-    coord_dict3 = {('Валерія', 'Олексій'): (205, 305, 405, 425),
-                   ('Анастасія', 'Юрій'): (405, 305, 205, 425),
-                   ('Вікторія', 'Іван'): (105, 305, 5, 425),
-                   ('Марія', 'Володимир'): (305, 305, 305, 425),
-                   ('Вікторія', 'Юрій'): (105, 305, 205, 425),
-                   ('Анна', 'Іван'): (5, 305, 5, 425),
-                   ('Анна', 'Олег'): (5, 305, 105, 425),
-                   ('Валерія', 'Юрій'): (205, 305, 205, 425)}
-
-    coord_dict4 = {('Валерія', 'Олексій'): (710, 305, 910, 425),
-                   ('Анастасія', 'Юрій'): (910, 305, 710, 425),
-                   ('Вікторія', 'Іван'): (610, 305, 510, 425),
-                   ('Марія', 'Володимир'): (810, 305, 810, 425),
-                   ('Вікторія', 'Юрій'): (610, 305, 710, 425),
-                   ('Анна', 'Іван'): (510, 305, 510, 425),
-                   ('Анна', 'Олег'): (510, 305, 610, 425),
-                   ('Валерія', 'Юрій'): (710, 305, 710, 425)}
-
-    coord_dict5 = {('Валерія', 'Олексій'): (210, 555, 410, 675),
-                   ('Анастасія', 'Юрій'): (410, 555, 210, 675),
-                   ('Вікторія', 'Іван'): (110, 555, 10, 675),
-                   ('Марія', 'Володимир'): (310, 555, 310, 675),
-                   ('Вікторія', 'Юрій'): (110, 555, 210, 675),
-                   ('Анна', 'Іван'): (10, 555, 10, 675),
-                   ('Анна', 'Олег'): (10, 555, 110, 675),
-                   ('Валерія', 'Юрій'): (210, 555, 210, 675)}
-    
-    RS_uni = functions.association_action(R, S)
-    RS_pere = functions.intersection(R, S)
-    RS_riz = functions.difference(R, S)
-    UR_riz = functions.difference_uni(U, R)
-    for i in RS_uni:
+    for i in set_r.union(set_s):
         if i in coord_dict1:
             canvas.create_line(coord_dict1[i], arrow="last")
-    for i in RS_pere:
+    for i in set_r.intersection(set_s):
         if i in coord_dict3:
             canvas.create_line(coord_dict3[i], arrow="last")
-    for i in RS_riz:
+    for i in set_r.difference(set_s):
         if i in coord_dict2:
             canvas.create_line(coord_dict2[i], arrow="last")
-    for i in UR_riz:
+    for i in set_u.difference(set_r):
         if i in coord_dict4:
             canvas.create_line(coord_dict4[i], arrow="last")
-    for i in S:
+    for i in set_s:
         if i in coord_dict5:
             canvas.create_line(coord_dict5[i], arrow="first")
-            
+
     Label(root4, text='R ∪ S', font='Arial 12').place(x=0)
     for i in range(len(womenlist)):
         Label(root4, text=womenlist[i], font='Arial 10').place(x=0 + i * 100, y=20)
@@ -213,7 +133,7 @@ def fourth_window():
     for i in range(len(menlist)):
         Label(root4, text=menlist[i], font='Arial 10').place(x=0 + i * 100, y=190)
         canvas.create_oval(5 + i * 100, 175, 15 + i * 100, 185, fill="black")
-        
+
     Label(root4, text='R ∩ S', font='Arial 12').place(x=0, y=250)
     for i in range(len(womenlist)):
         Label(root4, text=womenlist[i], font='Arial 10').place(x=0 + i * 100, y=270)
@@ -221,7 +141,7 @@ def fourth_window():
     for i in range(len(menlist)):
         Label(root4, text=menlist[i], font='Arial 10').place(x=0 + i * 100, y=440)
         canvas.create_oval(5 + i * 100, 425, 15 + i * 100, 435, fill="black")
-        
+
     Label(root4, text='R\S', font='Arial 12').place(x=500)
     for i in range(len(womenlist)):
         Label(root4, text=womenlist[i], font='Arial 10').place(x=500 + i * 100, y=20)
@@ -229,7 +149,7 @@ def fourth_window():
     for i in range(len(menlist)):
         Label(root4, text=menlist[i], font='Arial 10').place(x=500 + i * 100, y=190)
         canvas.create_oval(505 + i * 100, 175, 515 + i * 100, 185, fill="black")
-        
+
     Label(root4, text='U\R', font='Arial 12').place(x=500, y=250)
     for i in range(len(womenlist)):
         Label(root4, text=womenlist[i], font='Arial 10').place(x=500 + i * 100, y=270)
@@ -237,7 +157,7 @@ def fourth_window():
     for i in range(len(menlist)):
         Label(root4, text=menlist[i], font='Arial 10').place(x=500 + i * 100, y=440)
         canvas.create_oval(505 + i * 100, 425, 515 + i * 100, 435, fill="black")
-        
+
     Label(root4, text='S^-1', font='Arial 12').place(x=0, y=500)
     for i in range(len(womenlist)):
         Label(root4, text=womenlist[i], font='Arial 10').place(x=0 + i * 100, y=520)
@@ -247,7 +167,6 @@ def fourth_window():
         canvas.create_oval(5 + i * 100, 675, 15 + i * 100, 685, fill="black")
 
 
-# Вікно 1
 group = 32
 number_in_list = 16
 variant = (number_in_list + group % 60) % 30 + 1
@@ -256,21 +175,7 @@ root = Tk()
 root.title("Вікно 1")
 root.geometry("500x200")
 
-A = set()
-B = set()
-S = set()
-R = set()
-U = {('Анастасія', 'Юрій'),
-     ('Валерія', 'Олексій'),
-     ('Вікторія', 'Іван'),
-     ('Анна', 'Олег'),
-     ('Вікторія', 'Юрій'),
-     ('Валерія', 'Юрій'),
-     ('Марія', 'Володимир'),
-     ('Анна', 'Іван'),
-     ('Катерина', 'Микита')}
-womenlist = ["Анна", "Вікторія", "Валерія", "Марія", "Анастасія"]
-menlist = ["Іван", "Олег", "Юрій", "Володимир", "Олексій"]
+set_a, set_b, set_s, set_r = set(), set(), set(), set()
 
 Label(root, text='Крадожон Максим Романович', font='Arial 14').place(x=110, y=10)
 Label(root, text=f'Група {group}', font='Arial 12').place(x=10, y=160)
