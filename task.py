@@ -65,44 +65,50 @@ def third_window():
         for item in some_set:
             listbox.insert(END, item)
 
+    def create_labels_and_ovals(root, title, names, x_offset, y_offset):
+        Label(root, text=title, font='Arial 12').place(x=400 + x_offset, y=y_offset)
+        for i, name in enumerate(names):
+            y_position = 40 + y_offset if y_offset in [150, 400] else 25 + y_offset
+            oval_y = 25 + y_offset if y_offset in [150, 400] else 50 + y_offset
+            Label(root, text=name, font='Arial 10').place(x=401 + i * 100 + x_offset, y=y_position)
+            canvas.create_oval(401 + i * 100 + x_offset, oval_y, 410 + i * 100 + x_offset, oval_y + 10, fill="black")
+
+        for i in set_r:
+            if i in coord_dict_w:
+                canvas.create_line(coord_dict_w[i], arrow="last")
+        for i in set_s:
+            if i in coord_dict_gd:
+                canvas.create_line(coord_dict_gd[i], arrow="last")
+
     root3 = Tk()
     root3.title("Вікно 3")
-    root3.geometry("1000x500")
+    root3.geometry("1000x600")
 
-    canvas = Canvas(root3, bg="white", width=1000, height=500)
+    canvas = Canvas(root3, width=1000, height=500)
     canvas.place(x=0, y=0)
 
     functions.granddaugter(set_a, set_b, set_s)
     functions.wife(set_a, set_b, set_r)
 
-    for i in set_r:
-        if i in coord_dict_w:
-            canvas.create_line(coord_dict_w[i], arrow="last")
-    for i in set_s:
-        if i in coord_dict_gd:
-            canvas.create_line(coord_dict_gd[i], arrow="last")
-
     populate_listbox(Listbox(root3), set_a, 50, 100)
     populate_listbox(Listbox(root3), set_b, 200, 100)
 
-    Label(root3, text='A онука В', font='Arial 12').place(x=400)
-    for i in range(len(womenlist)):
-        Label(root3, text=womenlist[i], font='Arial 10').place(x=400 + i * 100, y=20)
-        canvas.create_oval(400 + i * 100, 45, 410 + i * 100, 55, fill="black")
-    for i in range(len(menlist)):
-        Label(root3, text=menlist[i], font='Arial 10').place(x=400 + i * 100, y=190)
-        canvas.create_oval(400 + i * 100, 175, 410 + i * 100, 185, fill="black")
-
-    Label(root3, text='A дружина В', font='Arial 12').place(x=400, y=250)
-    for i in range(len(womenlist)):
-        Label(root3, text=womenlist[i], font='Arial 10').place(x=400 + i * 100, y=270)
-        canvas.create_oval(400 + i * 100, 295, 410 + i * 100, 305, fill="black")
-    for i in range(len(menlist)):
-        Label(root3, text=menlist[i], font='Arial 10').place(x=400 + i * 100, y=440)
-        canvas.create_oval(400 + i * 100, 425, 410 + i * 100, 435, fill="black")
+    create_labels_and_ovals(root3, 'A онука В', womenlist, 0, 0)
+    create_labels_and_ovals(root3, 'A дружина В', womenlist, 0, 250)
+    create_labels_and_ovals(root3, '', menlist, 0, 150)
+    create_labels_and_ovals(root3, '', menlist, 0, 400)
 
 
 def fourth_window():
+    def create_labels_and_ovals(root, title, womenlist, menlist, x, y):
+        Label(root, text=title, font='Arial 12').place(x=x, y=y)
+        for i, name in enumerate(womenlist):
+            Label(root, text=name, font='Arial 10').place(x=x + i * 100, y=y + 20)
+            canvas.create_oval(x + 5 + i * 100, y + 45, x + 15 + i * 100, y + 55, fill="black")
+        for i, name in enumerate(menlist):
+            Label(root, text=name, font='Arial 10').place(x=x + i * 100, y=y + 190)
+            canvas.create_oval(x + 5 + i * 100, y + 175, x + 15 + i * 100, y + 185, fill="black")
+
     root4 = Tk()
     root4.title("Вікно 4")
     root4.geometry("1000x750")
@@ -110,61 +116,27 @@ def fourth_window():
     canvas = Canvas(root4, bg="white", width=1000, height=1000)
     canvas.place(x=0, y=0)
 
-    for i in set_r.union(set_s):
-        if i in coord_dict1:
-            canvas.create_line(coord_dict1[i], arrow="last")
-    for i in set_r.intersection(set_s):
-        if i in coord_dict3:
-            canvas.create_line(coord_dict3[i], arrow="last")
-    for i in set_r.difference(set_s):
-        if i in coord_dict2:
-            canvas.create_line(coord_dict2[i], arrow="last")
-    for i in set_u.difference(set_r):
-        if i in coord_dict4:
-            canvas.create_line(coord_dict4[i], arrow="last")
-    for i in set_s:
-        if i in coord_dict5:
-            canvas.create_line(coord_dict5[i], arrow="first")
+    set_dict = {
+        "rs": (set_r.union(set_s), coord_dict1),
+        "rs_intersect": (set_r.intersection(set_s), coord_dict3),
+        "r_diff_s": (set_r.difference(set_s), coord_dict2),
+        "u_diff_r": (set_u.difference(set_r), coord_dict4),
+        "s": (set_s, coord_dict5)
+    }
 
-    Label(root4, text='R ∪ S', font='Arial 12').place(x=0)
-    for i in range(len(womenlist)):
-        Label(root4, text=womenlist[i], font='Arial 10').place(x=0 + i * 100, y=20)
-        canvas.create_oval(5 + i * 100, 45, 15 + i * 100, 55, fill="black")
-    for i in range(len(menlist)):
-        Label(root4, text=menlist[i], font='Arial 10').place(x=0 + i * 100, y=190)
-        canvas.create_oval(5 + i * 100, 175, 15 + i * 100, 185, fill="black")
+    for key, (s, coord_dict) in set_dict.items():
+        for i in s:
+            if i in coord_dict:
+                if key == "s":
+                    canvas.create_line(coord_dict[i], coord_dict[i], arrow="first", arrowshape=(8, 10, 3))
+                else:
+                    canvas.create_line(coord_dict[i], coord_dict[i], arrow="last", arrowshape=(8, 10, 3))
 
-    Label(root4, text='R ∩ S', font='Arial 12').place(x=0, y=250)
-    for i in range(len(womenlist)):
-        Label(root4, text=womenlist[i], font='Arial 10').place(x=0 + i * 100, y=270)
-        canvas.create_oval(5 + i * 100, 295, 15 + i * 100, 305, fill="black")
-    for i in range(len(menlist)):
-        Label(root4, text=menlist[i], font='Arial 10').place(x=0 + i * 100, y=440)
-        canvas.create_oval(5 + i * 100, 425, 15 + i * 100, 435, fill="black")
-
-    Label(root4, text='R\S', font='Arial 12').place(x=500)
-    for i in range(len(womenlist)):
-        Label(root4, text=womenlist[i], font='Arial 10').place(x=500 + i * 100, y=20)
-        canvas.create_oval(505 + i * 100, 45, 515 + i * 100, 55, fill="black")
-    for i in range(len(menlist)):
-        Label(root4, text=menlist[i], font='Arial 10').place(x=500 + i * 100, y=190)
-        canvas.create_oval(505 + i * 100, 175, 515 + i * 100, 185, fill="black")
-
-    Label(root4, text='U\R', font='Arial 12').place(x=500, y=250)
-    for i in range(len(womenlist)):
-        Label(root4, text=womenlist[i], font='Arial 10').place(x=500 + i * 100, y=270)
-        canvas.create_oval(505 + i * 100, 295, 515 + i * 100, 305, fill="black")
-    for i in range(len(menlist)):
-        Label(root4, text=menlist[i], font='Arial 10').place(x=500 + i * 100, y=440)
-        canvas.create_oval(505 + i * 100, 425, 515 + i * 100, 435, fill="black")
-
-    Label(root4, text='S^-1', font='Arial 12').place(x=0, y=500)
-    for i in range(len(womenlist)):
-        Label(root4, text=womenlist[i], font='Arial 10').place(x=0 + i * 100, y=520)
-        canvas.create_oval(5 + i * 100, 545, 15 + i * 100, 555, fill="black")
-    for i in range(len(menlist)):
-        Label(root4, text=menlist[i], font='Arial 10').place(x=0 + i * 100, y=690)
-        canvas.create_oval(5 + i * 100, 675, 15 + i * 100, 685, fill="black")
+    create_labels_and_ovals(root4, 'R ∪ S', womenlist, menlist, 0, 0)
+    create_labels_and_ovals(root4, 'R ∩ S', womenlist, menlist, 0, 250)
+    create_labels_and_ovals(root4, 'R\S', womenlist, menlist, 500, 0)
+    create_labels_and_ovals(root4, 'U\R', womenlist, menlist, 500, 250)
+    create_labels_and_ovals(root4, 'S^-1', womenlist, menlist, 0, 500)
 
 
 group = 32
