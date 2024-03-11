@@ -1,9 +1,25 @@
 import functions
 import os
 from tkinter import *
-
 from data import coord_dict1, coord_dict3, coord_dict2, coord_dict4, coord_dict5, coord_dict_w, coord_dict_gd, \
     womenlist, menlist, set_u
+
+
+def main_window():
+    root = Tk()
+    root.title("Вікно 1")
+    root.geometry("500x200")
+
+    Label(root, text='Крадожон Максим Романович', font='Arial 14').place(x=110, y=10)
+    Label(root, text=f'Група {group}', font='Arial 12').place(x=10, y=160)
+    Label(root, text=f'Номер в списку: {number_in_list}', font='Arial 12').place(x=85, y=160)
+    Label(root, text=f'Варіант завдання: {variant}', font='Arial 12').place(x=330, y=160)
+
+    Button(root, width=8, text="Вікно 2", font="Arial 10", command=second_window).place(x=125, y=110)
+    Button(root, width=8, text="Вікно 3", font="Arial 10", command=third_window).place(x=205, y=110)
+    Button(root, width=8, text="Вікно 4", font="Arial 10", command=fourth_window).place(x=285, y=110)
+
+    root.mainloop()
 
 
 def second_window():
@@ -142,19 +158,5 @@ def fourth_window():
 group = 32
 number_in_list = 16
 variant = (number_in_list + group % 60) % 30 + 1
-
-root = Tk()
-root.title("Вікно 1")
-root.geometry("500x200")
-
 set_a, set_b, set_s, set_r = set(), set(), set(), set()
-
-Label(root, text='Крадожон Максим Романович', font='Arial 14').place(x=110, y=10)
-Label(root, text=f'Група {group}', font='Arial 12').place(x=10, y=160)
-Label(root, text=f'Номер в списку: {number_in_list}', font='Arial 12').place(x=85, y=160)
-Label(root, text=f'Варіант завдання: {variant}', font='Arial 12').place(x=330, y=160)
-
-Button(root, width=8, text="Вікно 2", font="Arial 10", command=second_window).place(x=125, y=110)
-Button(root, width=8, text="Вікно 3", font="Arial 10", command=third_window).place(x=205, y=110)
-Button(root, width=8, text="Вікно 4", font="Arial 10", command=fourth_window).place(x=285, y=110)
-root.mainloop()
+main_window()
