@@ -1,25 +1,8 @@
-import functions
+import data
 import os
 from tkinter import *
-from data import coord_dict1, coord_dict3, coord_dict2, coord_dict4, coord_dict5, coord_dict_w, coord_dict_gd, \
-    womenlist, menlist, set_u
-
-
-def main_window():
-    root = Tk()
-    root.title("Вікно 1")
-    root.geometry("500x200")
-
-    Label(root, text='Крадожон Максим Романович', font='Arial 14').place(x=110, y=10)
-    Label(root, text=f'Група {group}', font='Arial 12').place(x=10, y=160)
-    Label(root, text=f'Номер в списку: {number_in_list}', font='Arial 12').place(x=85, y=160)
-    Label(root, text=f'Варіант завдання: {variant}', font='Arial 12').place(x=330, y=160)
-
-    Button(root, width=8, text="Вікно 2", font="Arial 10", command=second_window).place(x=125, y=110)
-    Button(root, width=8, text="Вікно 3", font="Arial 10", command=third_window).place(x=205, y=110)
-    Button(root, width=8, text="Вікно 4", font="Arial 10", command=fourth_window).place(x=285, y=110)
-
-    root.mainloop()
+from data import coord_dict1, coord_dict3, coord_dict2, coord_dict4, coord_dict5, coord_dict_for_set_r, \
+    coord_dict_for_set_s, womenlist, menlist, set_u
 
 
 def second_window():
@@ -90,11 +73,18 @@ def third_window():
             canvas.create_oval(401 + i * 100 + x_offset, oval_y, 410 + i * 100 + x_offset, oval_y + 10, fill="black")
 
         for i in set_r:
-            if i in coord_dict_w:
-                canvas.create_line(coord_dict_w[i], arrow="last")
+            if i in coord_dict_for_set_r:
+                canvas.create_line(coord_dict_for_set_r[i], arrow="last")
         for i in set_s:
-            if i in coord_dict_gd:
-                canvas.create_line(coord_dict_gd[i], arrow="last")
+            if i in coord_dict_for_set_s:
+                canvas.create_line(coord_dict_for_set_s[i], arrow="last")
+
+    def relations(a, b, letter, relate):
+        for condition, elements in relate.items():
+            if elements[0] in a and elements[1] in b:
+                letter.add(condition)
+
+        print(letter)
 
     root3 = Tk()
     root3.title("Вікно 3")
@@ -103,16 +93,16 @@ def third_window():
     canvas = Canvas(root3, width=1000, height=500)
     canvas.place(x=0, y=0)
 
-    functions.granddaugter(set_a, set_b, set_s)
-    functions.wife(set_a, set_b, set_r)
+    relations(set_a, set_b, letter=set_s, relate=data.relationships_for_granddaughter)
+    relations(set_a, set_b, letter=set_r, relate=data.relationships_for_wife)
 
     populate_listbox(Listbox(root3), set_a, 50, 100)
     populate_listbox(Listbox(root3), set_b, 200, 100)
 
     create_labels_and_ovals(root3, 'A онука В', womenlist, 0, 0)
     create_labels_and_ovals(root3, 'A дружина В', womenlist, 0, 250)
-    create_labels_and_ovals(root3, '', menlist, 0, 150)
-    create_labels_and_ovals(root3, '', menlist, 0, 400)
+    create_labels_and_ovals(root3, None, menlist, 0, 150)
+    create_labels_and_ovals(root3, None, menlist, 0, 400)
 
 
 def fourth_window():
@@ -159,4 +149,18 @@ group = 32
 number_in_list = 16
 variant = (number_in_list + group % 60) % 30 + 1
 set_a, set_b, set_s, set_r = set(), set(), set(), set()
-main_window()
+
+root = Tk()
+root.title("Вікно 1")
+root.geometry("500x200")
+
+Label(root, text='Крадожон Максим Романович', font='Arial 14').place(x=110, y=10)
+Label(root, text=f'Група {group}', font='Arial 12').place(x=10, y=160)
+Label(root, text=f'Номер в списку: {number_in_list}', font='Arial 12').place(x=85, y=160)
+Label(root, text=f'Варіант завдання: {variant}', font='Arial 12').place(x=330, y=160)
+
+Button(root, width=8, text="Вікно 2", font="Arial 10", command=second_window).place(x=125, y=110)
+Button(root, width=8, text="Вікно 3", font="Arial 10", command=third_window).place(x=205, y=110)
+Button(root, width=8, text="Вікно 4", font="Arial 10", command=fourth_window).place(x=285, y=110)
+
+root.mainloop()
