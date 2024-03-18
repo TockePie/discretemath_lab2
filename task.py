@@ -2,6 +2,7 @@ import data
 import os
 from tkinter import *
 from data import *
+from sencitive_data import *
 
 
 def second_window():
@@ -146,18 +147,16 @@ def fourth_window():
     create_labels_and_ovals('S^-1', 0, 500)
 
 
-group = 32
-number_in_list = 16
-variant = (number_in_list + group % 60) % 30 + 1
+variant = (senc_data['number_in_list'] + senc_data['group'] % 60) % 30 + 1
 set_a, set_b, set_s, set_r = set(), set(), set(), set()
 
 root = Tk()
 root.title("Вікно 1")
 root.geometry("500x200")
 
-Label(root, text='Крадожон Максим Романович', font='Arial 14').place(x=110, y=10)
-Label(root, text=f'Група {group}', font='Arial 12').place(x=10, y=160)
-Label(root, text=f'Номер в списку: {number_in_list}', font='Arial 12').place(x=85, y=160)
+Label(root, text=senc_data['name'], font='Arial 14').place(x=110, y=10)
+Label(root, text=f"Група {senc_data['group']}", font='Arial 12').place(x=10, y=160)
+Label(root, text=f"Номер в списку: {senc_data['number_in_list']}", font='Arial 12').place(x=85, y=160)
 Label(root, text=f'Варіант завдання: {variant}', font='Arial 12').place(x=330, y=160)
 
 Button(root, width=8, text="Вікно 2", font="Arial 10", command=second_window).place(x=125, y=110)
