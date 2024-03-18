@@ -1,14 +1,13 @@
 import data
 import os
 from tkinter import *
-from data import coord_dict1, coord_dict3, coord_dict2, coord_dict4, coord_dict5, coord_dict_for_set_r, \
-    coord_dict_for_set_s, womenlist, menlist, set_u
+from data import *
 
 
 def second_window():
     def set_adder():
-        selected_listbox = women_listbox if setnum.get() == 1 else men_listbox
-        selected_set = set_a if setnum.get() == 1 else set_b
+        selected_listbox = women_listbox if set_num.get() == 1 else men_listbox
+        selected_set = set_a if set_num.get() == 1 else set_b
         print(selected_listbox.get(ANCHOR))
         selected_set.add(selected_listbox.get(ANCHOR))
 
@@ -29,20 +28,22 @@ def second_window():
         set_to_clear.clear()
         os.remove(file_name)
 
+    def create_listbox(x_pos, y_pos, items):
+        listbox = Listbox(root2)
+        listbox.place(x=x_pos, y=y_pos)
+        listbox.insert(END, *items)
+        return listbox
+
     root2 = Tk()
     root2.title("Вікно 2")
     root2.geometry("500x350")
 
-    setnum = IntVar(root2)
-    women_listbox = Listbox(root2)
-    women_listbox.place(x=50, y=10)
-    women_listbox.insert(END, *womenlist)
-    men_listbox = Listbox(root2)
-    men_listbox.place(x=300, y=10)
-    men_listbox.insert(END, *menlist)
+    set_num = IntVar(root2)
+    women_listbox = create_listbox(50, 10, items=womenlist)
+    men_listbox = create_listbox(300, 10, items=menlist)
 
-    Radiobutton(root2, text="Множина А", variable=setnum, value=1).place(x=60, y=180)
-    Radiobutton(root2, text="Множина B", variable=setnum, value=2).place(x=320, y=180)
+    Radiobutton(root2, text="Множина А", variable=set_num, value=1).place(x=60, y=180)
+    Radiobutton(root2, text="Множина B", variable=set_num, value=2).place(x=320, y=180)
     Button(root2, width=8, text="Додати", font="Arial 10", command=set_adder).place(x=200, y=120)
     Button(root2, width=15, text="Зберегти А у файл", font="Arial 10",
            command=lambda: save_set_to_file(set_a, "Adata.txt")).place(x=0 + 50, y=240)
@@ -64,12 +65,12 @@ def third_window():
         for item in some_set:
             listbox.insert(END, item)
 
-    def create_labels_and_ovals(root, title, names, x_offset, y_offset):
-        Label(root, text=title, font='Arial 12').place(x=400 + x_offset, y=y_offset)
+    def create_labels_and_ovals(title, names, x_offset, y_offset):
+        Label(root3, text=title, font='Arial 12').place(x=400 + x_offset, y=y_offset)
         for i, name in enumerate(names):
             y_position = 40 + y_offset if y_offset in [150, 400] else 25 + y_offset
             oval_y = 25 + y_offset if y_offset in [150, 400] else 50 + y_offset
-            Label(root, text=name, font='Arial 10').place(x=401 + i * 100 + x_offset, y=y_position)
+            Label(root3, text=name, font='Arial 10').place(x=401 + i * 100 + x_offset, y=y_position)
             canvas.create_oval(401 + i * 100 + x_offset, oval_y, 410 + i * 100 + x_offset, oval_y + 10, fill="black")
 
         for i in set_r:
@@ -79,9 +80,9 @@ def third_window():
             if i in coord_dict_for_set_s:
                 canvas.create_line(coord_dict_for_set_s[i], arrow="last")
 
-    def relations(a, b, letter, relate):
+    def relations(letter, relate):
         for condition, elements in relate.items():
-            if elements[0] in a and elements[1] in b:
+            if elements[0] in set_a and elements[1] in set_b:
                 letter.add(condition)
 
         print(letter)
@@ -93,26 +94,26 @@ def third_window():
     canvas = Canvas(root3, width=1000, height=500)
     canvas.place(x=0, y=0)
 
-    relations(set_a, set_b, letter=set_s, relate=data.relationships_for_granddaughter)
-    relations(set_a, set_b, letter=set_r, relate=data.relationships_for_wife)
+    relations(letter=set_s, relate=data.relationships_for_granddaughter)
+    relations(letter=set_r, relate=data.relationships_for_wife)
 
     populate_listbox(Listbox(root3), set_a, 50, 100)
     populate_listbox(Listbox(root3), set_b, 200, 100)
 
-    create_labels_and_ovals(root3, 'A онука В', womenlist, 0, 0)
-    create_labels_and_ovals(root3, 'A дружина В', womenlist, 0, 250)
-    create_labels_and_ovals(root3, None, menlist, 0, 150)
-    create_labels_and_ovals(root3, None, menlist, 0, 400)
+    create_labels_and_ovals('A онука В', womenlist, 0, 0)
+    create_labels_and_ovals('A дружина В', womenlist, 0, 250)
+    create_labels_and_ovals(None, menlist, 0, 150)
+    create_labels_and_ovals(None, menlist, 0, 400)
 
 
 def fourth_window():
-    def create_labels_and_ovals(root, title, womenlist, menlist, x, y):
-        Label(root, text=title, font='Arial 12').place(x=x, y=y)
+    def create_labels_and_ovals(title, x, y):
+        Label(root4, text=title, font='Arial 12').place(x=x, y=y)
         for i, name in enumerate(womenlist):
-            Label(root, text=name, font='Arial 10').place(x=x + i * 100, y=y + 20)
+            Label(root4, text=name, font='Arial 10').place(x=x + i * 100, y=y + 20)
             canvas.create_oval(x + 5 + i * 100, y + 45, x + 15 + i * 100, y + 55, fill="black")
         for i, name in enumerate(menlist):
-            Label(root, text=name, font='Arial 10').place(x=x + i * 100, y=y + 190)
+            Label(root4, text=name, font='Arial 10').place(x=x + i * 100, y=y + 190)
             canvas.create_oval(x + 5 + i * 100, y + 175, x + 15 + i * 100, y + 185, fill="black")
 
     root4 = Tk()
@@ -138,11 +139,11 @@ def fourth_window():
                 else:
                     canvas.create_line(coord_dict[i], coord_dict[i], arrow="last", arrowshape=(8, 10, 3))
 
-    create_labels_and_ovals(root4, 'R ∪ S', womenlist, menlist, 0, 0)
-    create_labels_and_ovals(root4, 'R ∩ S', womenlist, menlist, 0, 250)
-    create_labels_and_ovals(root4, 'R\S', womenlist, menlist, 500, 0)
-    create_labels_and_ovals(root4, 'U\R', womenlist, menlist, 500, 250)
-    create_labels_and_ovals(root4, 'S^-1', womenlist, menlist, 0, 500)
+    create_labels_and_ovals('R ∪ S', 0, 0)
+    create_labels_and_ovals('R ∩ S', 0, 250)
+    create_labels_and_ovals('R\S', 500, 0)
+    create_labels_and_ovals('U\R', 500, 250)
+    create_labels_and_ovals('S^-1', 0, 500)
 
 
 group = 32
